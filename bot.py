@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord.utils import get
 from discord import FFmpegPCMAudio
 import time
+import env
+
 from discord.ui import Select
 
 ffmpeg_path = 'C:\ffmpeg\bin\ffmpeg.exe'
@@ -18,9 +20,8 @@ voice_client = None
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-token = 'MTExMTcyMzY0MjA0NTM0OTk3OA.GgpIsw.27Zhpr5jRptpKktiUnF19WUUA2Oyzn2iKs1_4A'
-chat_id = '1086464564717174845'
-
+token = env.token
+chat_id = env.chat_id
 
 
 @bot.event
@@ -38,6 +39,7 @@ async def saludo(ctx):
 async def taka(ctx):
     await ctx.send(f'TAKA-TAKA-TAKA-TAKA-TAKA-TAKA-TAKA-TAKA!!!!!')
 
+
 @bot.command()
 async def menu(ctx, interaction):
     selected_value = interaction.data['values'][0]
@@ -47,7 +49,6 @@ async def menu(ctx, interaction):
         await interaction.send("Seleccionaste la opción 2")
     elif selected_value == '3':
         await interaction.send("Seleccionaste la opción 3")
-
 
     options = [
         discord.SelectOption(label='Option 1', value='1'),
@@ -66,6 +67,7 @@ async def menu(ctx, interaction):
     view.add_item(select)
     message = await ctx.send("Mensaje con select:", view=view)
 
+
 @bot.event
 async def on_select_option(interaction):
     if interaction.component.custom_id == 'select':
@@ -79,21 +81,20 @@ async def on_select_option(interaction):
         elif selected_value == 'opcion3':
             await bot.invoke(ctx, 'sonido')
 
+
 @bot.command()
 async def sonido(ctx):
-    global voice_client  
+    global voice_client
     canal_voz = ctx.author.voice.channel
- 
+
     if voice_client and voice_client.is_connected():
         await voice_client.move_to(canal_voz)
     else:
-        voice_client = await canal_voz.connect() 
+        voice_client = await canal_voz.connect()
 
     audio_source = FFmpegPCMAudio('quierosemen.mp3')
     voice_client.play(audio_source)
     # time.sleep(1)
 
 
-
-# Inicia el bot
 bot.run(token)
