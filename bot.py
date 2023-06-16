@@ -22,7 +22,6 @@ voice_client = None
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 token = env.token
-chat_id = env.chat_id
 buttons_data = env.buttons_data
 
 @bot.event
@@ -36,6 +35,7 @@ async def on_message(message):
         if msg.author == bot.user:
             await msg.delete()
 
+    message.content = '!menu'
     await bot.process_commands(message)
 
 
