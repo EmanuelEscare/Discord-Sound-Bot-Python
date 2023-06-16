@@ -50,8 +50,11 @@ async def menu(ctx):
     view = View()
 
     for button_data in buttons_data:
-        button = Button(label=button_data["label"], style=button_data["style"])
-
+        if button_data["emoji"]:
+            button = Button(label=button_data["label"], style=button_data["style"], emoji=button_data["emoji"])
+        else:
+            button = Button(label=button_data["label"], style=button_data["style"])
+            
         async def button_callback(interaction, sound=button_data["sound"]):
             await sonido(ctx, sound)
             await interaction.response.defer()
