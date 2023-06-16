@@ -34,9 +34,16 @@ async def on_message(message):
     async for msg in message.channel.history(before=message):
         if msg.author == bot.user:
             await msg.delete()
+    
+    ctx = message
+    
+    if message.content == "!menu":
+        await message.delete()
+        
+    ctx.content = '!menu'
+    await bot.process_commands(ctx)
+    
 
-    message.content = '!menu'
-    await bot.process_commands(message)
 
 
 @bot.event
